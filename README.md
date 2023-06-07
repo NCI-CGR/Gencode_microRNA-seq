@@ -11,30 +11,31 @@ Major steps in the workflow include:
 ![DAG](dag.jpeg)
 ## II. Dependencies
 * [Snakemake](https://snakemake.readthedocs.io/en/stable/)
+
+**Docker Containers**
 * [Cutadapt](https://cutadapt.readthedocs.io/en/stable/)
 * [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 * [MultiQC](https://multiqc.info)
 * [STAR](https://github.com/alexdobin/STAR)
 * [R](https://www.r-project.org)
 ## III. Input
-* sample_names.txt
-* merged fastq files stored in directory: merged_fastq/merged_fastq
-* adapters.fa with adapter sequences
+* merged fastq files stored in directory: `merged_fastq`
+* `adapters.fa` with adapter sequences
 * reference genome sequence and annotation files
 * microRNA annotation file
+* `config.yaml` with updated file locations
 ## IV. Output
-* Trimmed reads in directory: trimmed/
-* QC reports of pre-trimmed reads in direcotry: pretrim_qc/
-* QC reports of post-trimmed reads in direcotry: posttrim_qc/
-* STAR index in directory: star_index/
-* STAR alignent results and statistics reports in directory : star_align/
-* merged reads-count table: reads_count/reads_count.csv
+* Trimmed reads in directory: `trimmed/`
+* QC reports of pre-trimmed reads in direcotry: `pretrim_qc/`
+* QC reports of post-trimmed reads in direcotry: `posttrim_qc/`
+* STAR index in directory: `star_index/`
+* STAR alignent results and statistics reports in directory : `star_align/`
+* merged reads-count table: `reads_count/reads_count.csv`
 
 ## V. Running the workflow
 1. Update `config.yaml` file with the following:
     - reference fasta
     - reference annotation
-    - path to fastq files
     - adapters fasta file (optional)
     - miRNA annotations (optional)
 
@@ -42,16 +43,17 @@ Major steps in the workflow include:
 
 Example: running on CCAD2 cluster
 ```
-module load conda
-conda init bash
-conda activate snakemake
-
 module load slurm
 module load singularity
-module load R
+module load conda
+
+conda activate snakemake
+
+mkdir -p singularity_cache
 
 snakemake \
     --use-singularity \
+    --singularity-prefix singularity_cache \
     --keep-going \
     --local-cores $SLURM_CPUS_PER_TASK \
     --jobs 10 \
