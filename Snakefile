@@ -172,6 +172,8 @@ rule merge:
           expand("star_align/{sample}/{sample}ReadsPerGene.out.tab",sample=d.keys())
     output:
           "reads_count/reads_count.csv"
+    singularity:
+      "docker://cgrlab/gencode-microrna-seq:v1.0"
     shell:
           """
           Rscript merge.R 2>log/merge_count.err
