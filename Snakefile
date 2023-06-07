@@ -87,8 +87,6 @@ rule star_index:
     input:
           fasta=config['genome_fasta'],
           annot=config['genome_annotation']
-      #     "/fdb/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/WholeGenomeFasta/genome.fa",
-      #     "star_index/gencode.v24.primary_assembly.annotation-tRNAs-ERCC_phiX.gtf"
     output:
           "star_index/complete.txt"
     threads: 24
@@ -102,7 +100,6 @@ rule star_index:
 
 rule star_align:
     input:
-      #     "star_index/ENCFF628BVT.gtf",
           mirna_annot=config["miRNA_Annotation"],
           trimmed_fastq="trimmed/{sample}.trim.fastq.gz",
           star_index_complete="star_index/complete.txt"
@@ -142,8 +139,6 @@ rule star_align:
           --outWigNorm RPM 2>log/{wildcards.sample}_star_align.err 
           """
 
-
-
 rule multiqc:
     input:
           expand("pretrim_qc/{sample}_fastqc.html",sample=sample_files_dict.keys()),
@@ -164,7 +159,6 @@ rule multiqc:
           cp star_align/*/*Log.final.out star_align/log
           multiqc star_align/log/. --title star_align -o star_align/log 2>log/multiqc_star.err
           """
-
 
 ## library is sense stranded
 rule merge:
