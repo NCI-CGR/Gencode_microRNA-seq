@@ -8,6 +8,7 @@ import itertools
 
 shell.prefix("set -eo pipefail; ")
 configfile: "config.yaml"
+os.makedirs("log", exist_ok=True)
 # localrules: all
 
 # define wildcards
@@ -20,16 +21,15 @@ def parse_sampleID(fname):
     sample = base.rsplit('.fastq.gz')[0].rsplit('.fq.gz')[0]
     return sample
 
-file = sorted(glob.glob(os.path.join(config['fastq_dir'],'*.fastq.gz')), key=parse_sampleID)
-# file = sorted(glob.glob('merged_fastq/*.fastq.gz'), key=parse_sampleID)
-
-d = {}
+# file = sorted(glob.glob(os.path.join(config['fastq_dir'],'*.fastq.gz')), key=parse_sampleID)
+file = sorted(glob.glob('merged_fastq/*.fastq.gz'), key=parse_sampleID)
+sample_files_dict = {}
 for key, value in itertools.groupby(file, parse_sampleID):
-    d[key] = list(value)
+    sample_files_dict[key] = list(value)
        
 rule all:
     input:
-          expand("star_align/{sample}/{sample}Aligned.sortedByCoord.out.bam",sample=d.keys()),
+          expand("star_align/{sample}/{sample}Aligned.sortedByCoord.out.bam",sample=sample_files_dict.keys()),
           "pretrim_qc/preQC_multiqc_report.html",
           "posttrim_qc/postQC_multiqc_report.html",
           "star_align/log/star_align_multiqc_report.html",
@@ -146,9 +146,9 @@ rule star_align:
 
 rule multiqc:
     input:
-          expand("pretrim_qc/{sample}_fastqc.html",sample=d.keys()),
-          expand("posttrim_qc/{sample}.trim_fastqc.html",sample=d.keys()),
-          expand("star_align/{sample}/{sample}Log.final.out",sample=d.keys())
+          expand("pretrim_qc/{sample}_fastqc.html",sample=sample_files_dict.keys()),
+          expand("posttrim_qc/{sample}.trim_fastqc.html",sample=sample_files_dict.keys()),
+          expand("star_align/{sample}/{sample}Log.final.out",sample=sample_files_dict.keys())
     output:
           "pretrim_qc/preQC_multiqc_report.html",
           "posttrim_qc/postQC_multiqc_report.html",
@@ -169,7 +169,7 @@ rule multiqc:
 ## library is sense stranded
 rule merge:
     input:  
-          expand("star_align/{sample}/{sample}ReadsPerGene.out.tab",sample=d.keys())
+          expand("star_align/{sample}/{sample}ReadsPerGene.out.tab",sample=sample_files_dict.keys())
     output:
           "reads_count/reads_count.csv"
     singularity:
