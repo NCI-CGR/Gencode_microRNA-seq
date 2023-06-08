@@ -1,4 +1,4 @@
-from r-base:4.3.0
+FROM rocker/tidyverse:4.3.0
 
 # Copy additional scripts from bin and add to PATH
 RUN mkdir /opt/bin
