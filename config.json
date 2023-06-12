@@ -1,0 +1,6 @@
+{
+  "genome_fasta": "ref/Homo_sapiens.GRCh38.dna_sm.toplevel.fa",
+  "genome_annotation": "ref/Homo_sapiens.GRCh38.109.gtf",
+  "adapters": "adapters.fa",
+  "miRNA_Annotation": "star_index/ENCFF470CZH_rename.gtf"
+}

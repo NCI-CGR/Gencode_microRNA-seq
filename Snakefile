@@ -7,7 +7,7 @@ import glob
 import itertools
 
 shell.prefix("set -eo pipefail; ")
-configfile: "config.yaml"
+configfile: "config.json"
 os.makedirs("log", exist_ok=True)
 # localrules: all
 
