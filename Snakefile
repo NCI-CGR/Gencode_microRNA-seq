@@ -52,12 +52,17 @@ rule cutadapt:
     shell:
           """
           cutadapt \
-            -b file:{input.adapters} \
-            -m 15 -M 31 \
+            --adapter file:{input.adapters} \
+            --minimum-length 15 \
+            --maximum-length 31 \
+            --overlap 5 \
             --too-short-output={output.too_short} \
             --too-long-output={output.too_long} \
-            -q 10,10 -o {output.trimmed} \
-            --cores {threads} {input.fastq} 2>log/{wildcards.sample}_cutadapt.err
+            --quality-cutoff 10,10 \
+            -o {output.trimmed} \
+            --cores {threads} \
+            {input.fastq} \
+            2>log/{wildcards.sample}_cutadapt.err
           """
       
 rule pretrim_qc:
