@@ -44,7 +44,9 @@ rule cutadapt:
     output:
           trimmed="trimmed/{sample}.trim.fastq.gz",
           too_short="trimmed/{sample}_too_short.fastq.gz",
-          too_long="trimmed/{sample}_too_long.fastq.gz"
+          too_long="trimmed/{sample}_too_long.fastq.gz",
+          json_report="trimmed/{sample}_report.json"
+          log_report="trimmed/{sample}.log"
     
     singularity:
         "docker://quay.io/biocontainers/cutadapt:4.4--py39hf95cd2a_1"
@@ -61,7 +63,9 @@ rule cutadapt:
             --quality-cutoff 10,10 \
             -o {output.trimmed} \
             --cores {threads} \
+            --json {json_report} \
             {input.fastq} \
+            > {log_report} \
             2>log/{wildcards.sample}_cutadapt.err
           """
       
