@@ -45,7 +45,7 @@ rule cutadapt:
           trimmed="trimmed/{sample}.trim.fastq.gz",
           too_short="trimmed/{sample}_too_short.fastq.gz",
           too_long="trimmed/{sample}_too_long.fastq.gz",
-          json_report="trimmed/{sample}_report.json"
+          json_report="trimmed/{sample}_report.json",
           log_report="trimmed/{sample}.log"
     
     singularity:
@@ -63,9 +63,9 @@ rule cutadapt:
             --quality-cutoff 10,10 \
             -o {output.trimmed} \
             --cores {threads} \
-            --json {json_report} \
+            --json {output.json_report} \
             {input.fastq} \
-            > {log_report} \
+            > {output.log_report} \
             2>log/{wildcards.sample}_cutadapt.err
           """
       
