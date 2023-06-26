@@ -100,18 +100,20 @@ rule posttrim_qc:
 
 rule star_index:
     input:
-          fasta=config['genome_fasta'],
-          annot=config['genome_annotation']
+            fasta=config['genome_fasta'],
+            annot=config['genome_annotation']
     output:
-          "star_index/complete.txt"
+            "star_index/complete.txt"
     threads: 24
+    resources:
+            mem_mb=500000
     singularity:
             "docker://quay.io/biocontainers/star:2.7.10b--h6b7c446_1"
     shell:
-          """
-          STAR --runThreadN 24 --runMode genomeGenerate --genomeDir star_index --sjdbGTFfile {input.annot} --sjdbOverhang 1 --genomeFastaFiles {input.fasta} 2>log/star_index.err 
-          touch {output}
-          """
+            """
+            STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir star_index --sjdbGTFfile {input.annot} --sjdbOverhang 1 --genomeFastaFiles {input.fasta} 2>log/star_index.err 
+            touch {output}
+            """
 
 rule star_align:
     input:
