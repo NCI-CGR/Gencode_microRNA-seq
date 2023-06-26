@@ -44,7 +44,6 @@ rule cutadapt:
     output:
           trimmed="trimmed/{sample}.trim.fastq.gz",
           too_short="trimmed/{sample}_too_short.fastq.gz",
-          too_long="trimmed/{sample}_too_long.fastq.gz",
           json_report="trimmed/{sample}_report.json",
           log_report="trimmed/{sample}.log"
     
@@ -56,10 +55,8 @@ rule cutadapt:
           cutadapt \
             --adapter file:{input.adapters} \
             --minimum-length 15 \
-            --maximum-length 31 \
             --overlap 5 \
             --too-short-output={output.too_short} \
-            --too-long-output={output.too_long} \
             --quality-cutoff 10,10 \
             -o {output.trimmed} \
             --cores {threads} \
@@ -83,6 +80,7 @@ rule pretrim_qc:
           fastqc {input} -o pretrim_qc -f fastq --noextract 2>log/{wildcards.sample}_preqc.err
           """
 
+
 rule posttrim_qc:
     input: 
           "trimmed/{sample}.trim.fastq.gz"
@@ -98,6 +96,7 @@ rule posttrim_qc:
           """
 
 
+
 rule star_index:
     input:
             fasta=config['genome_fasta'],
@@ -111,7 +110,14 @@ rule star_index:
             "docker://quay.io/biocontainers/star:2.7.10b--h6b7c446_1"
     shell:
             """
-            STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir star_index --sjdbGTFfile {input.annot} --sjdbOverhang 1 --genomeFastaFiles {input.fasta} 2>log/star_index.err 
+            MAX_RAM=$(({resources.mem_mb} * 1000000))
+            STAR --runThreadN {threads} \
+            --runMode genomeGenerate \
+            --genomeDir star_index \
+            --sjdbGTFfile {input.annot} \
+            --sjdbOverhang 1 \
+            --limitGenomeGenerateRAM $MAX_RAM \
+            --genomeFastaFiles {input.fasta} 2>log/star_index.err 
             touch {output}
             """
 
