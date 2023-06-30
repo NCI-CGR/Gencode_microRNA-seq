@@ -167,6 +167,7 @@ rule multiqc:
           expand("pretrim_qc/{sample}_fastqc.html",sample=sample_files_dict.keys()),
           expand("posttrim_qc/{sample}.trim_fastqc.html",sample=sample_files_dict.keys()),
           expand("star_align/{sample}/{sample}Log.final.out",sample=sample_files_dict.keys())
+          expand("trimmed/{sample}.log", sample=sample_files_dict.keys())
     output:
           "pretrim_qc/preQC_multiqc_report.html",
           "posttrim_qc/postQC_multiqc_report.html",
@@ -177,6 +178,7 @@ rule multiqc:
     shell:
           """
           multiqc pretrim_qc/. --title preQC -o pretrim_qc 2>log/multiqc_preqc.err
+          multiqc trimmed/. --title Cutadapt -o trimmed 2>log/multiqc_cutadapt.err
           multiqc posttrim_qc/. --title postQC -o posttrim_qc/ 2>log/multiqc_postqc.err
           mkdir -p star_align/log
           cp star_align/*/*Log.final.out star_align/log
