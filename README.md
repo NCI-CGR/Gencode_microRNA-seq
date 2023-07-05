@@ -23,7 +23,7 @@ Major steps in the workflow include:
 * `adapters.fa` with adapter sequences
 * reference genome sequence and annotation files
 * microRNA annotation file
-* `config.yaml` with updated file locations
+* `config.json` with updated file locations
 ## IV. Output
 * Trimmed reads in directory: `trimmed/`
 * QC reports of pre-trimmed reads in direcotry: `pretrim_qc/`
@@ -33,7 +33,7 @@ Major steps in the workflow include:
 * merged reads-count table: `reads_count/reads_count.csv`
 
 ## V. Running the workflow
-1. Update `config.yaml` file with the following:
+1. Update `config.json` file with the following:
     - reference fasta
     - reference annotation
     - adapters fasta file (optional)
