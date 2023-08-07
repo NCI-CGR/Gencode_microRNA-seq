@@ -5,9 +5,9 @@ microRNA-seq workflow utilizing Cutadapt and STAR to generate a Sample-Gene read
 
 ## I. Description
 Major steps in the workflow include:
-1) Trimming of adapters and low-quality reads using Cutadapt and only reads with a minimum length of 15 nt were kept
+1) Trimming of adapters and low-quality reads using Cutadapt and retention of reads with a minimum length of 15 nt
 2) Generating QC reports using FastQC and aggregating results using MultiQC
-3) Aligning trimmed reads to GRCh38 human reference genome (illumine iGenomes NCBI GRCh38) using STAR, and microRNA reads count was quantified according to GENCODE V24 genome annotation file which was the microRNA subset from comprehensive GENCODE annotations.
+3) Aligning trimmed reads to GRCh38 human reference genome (illumine iGenomes NCBI GRCh38) using STAR, and microRNA reads count was quantified according to GENCODE V24 genome annotation file which was the microRNA subset from comprehensive GENCODE annotations
 4) Merging reads-count tables of all samples
 
 ![DAG](dag.jpeg)
