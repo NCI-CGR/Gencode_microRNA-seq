@@ -1,5 +1,7 @@
 # Gencode_microRNA-seq
-microRNA-seq workflow utilizing STAR to generate a Sample-Gene read count matrix
+microRNA-seq workflow utilizing Cutadapt and STAR to generate a Sample-Gene read count matrix
+
+#### Authors: Ben Jordan (ben.jordan@nih.gov) and Komal Jain (komal.jain@nih.gov)
 
 ## I. Description
 Major steps in the workflow include:
