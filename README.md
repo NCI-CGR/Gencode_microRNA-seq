@@ -7,8 +7,8 @@ microRNA-seq workflow utilizing Cutadapt and STAR to generate a Sample-Gene read
 Major steps in the workflow include:
 1) Trimming of adapters and low-quality reads using Cutadapt and retention of reads with a minimum length of 15 nt
 2) Generating QC reports using FastQC and aggregating results using MultiQC
-3) Aligning trimmed reads to GRCh38 human reference genome (https://ftp.ensembl.org/pub/release-109/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.toplevel.fa.gz)) using STAR, and microRNA reads count was quantified according to GENCODE V29 (ENCFF470CZH.gtf, https://www.encodeproject.org/files/ENCFF470CZH/) genome annotation file which was the microRNA subset from comprehensive GENCODE annotations
-4) A secondary mapping step using the trimmed reads from Step 1 and mapping to the miRBase gtf by extracting the hairpin/stem-loop sequences from hsa.gff3 file downloaded from here (https://www.mirbase.org/ftp.shtml).  The gff3 file was converted to gtf using gffread software, then a custom script was used to bring the gtf file to the format expected by STAR mapper
+3) Aligning trimmed reads to GRCh38 human reference genome (https://ftp.ensembl.org/pub/release-109/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.toplevel.fa.gz)) using STAR, and quantifying microRNA reads according to GENCODE V29 (ENCFF470CZH.gtf, https://www.encodeproject.org/files/ENCFF470CZH/) genome annotation file downloaded from Gencode
+Using the trimmed reads from Step 1, mapping to the miRBase gtf by extracting the hairpin/stem-loop sequences from hsa.gff3 file downloaded from here (https://www.mirbase.org/ftp.shtml).  The gff3 file was converted to gtf using gffread software, then a custom script was used to bring the gtf file to the format expected by STAR mapper
 5) Merging reads-count tables of all samples for both miRBase and Encode gtf resulting in two count matrices
 
 ![DAG](dag.jpeg)
